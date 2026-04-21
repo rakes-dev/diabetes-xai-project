@@ -55,15 +55,11 @@ if st.button("Predict"):
 
     # ---------------- SHAP PART ----------------
     explainer = shap.TreeExplainer(model)
-
-    shap_values = explainer.shap_values(input_scaled)
+    shap_values = explainer(input_scaled)
 
     st.subheader("Explainable AI - Feature Impact")
 
-    # Use class 1 (diabetes)
-    shap_val = shap_values[:, :, 1]
+    fig = plt.figure()
+    shap.plots.waterfall(shap_values[0, :, 1], show=False)
 
-    # Create plot
-    fig, ax = plt.subplots()
-    shap.bar_plot(shap_val[0], feature_names=feature_names)
     st.pyplot(fig)
